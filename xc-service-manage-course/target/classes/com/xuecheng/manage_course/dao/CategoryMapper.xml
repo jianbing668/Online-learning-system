@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xuecheng.manage_course.dao.CategoryMapper">
+    <resultMap id="categoryMap" type="com.xuecheng.framework.domain.course.ext.CategoryNode" >
+        <id property="id" column="one_id" ></id>
+        <result property="name" column="one_name" ></result>
+        <collection property="children" ofType="com.xuecheng.framework.domain.course.ext.CategoryNode" >
+            <id property="id" column="two_id"></id>
+            <result property="name" column="two_name"></result>
+            <collection property="children" ofType="com.xuecheng.framework.domain.course.ext.CategoryNode">
+                <id property="id" column="three_id"></id>
+                <result property="name" column="three_name"></result>
+            </collection>
+        </collection>
+    </resultMap>
+    <select id="findCategoryList"  resultMap="categoryMap">
+        select a.id one_id,
+        a.name one_name ,
+        b.id two_id,
+        b.name two_name,
+        c.id three_id,
+        c.name three_name
+        from category a
+        left join category b on a.id = b.parentid
+        LEFT join category c on b.id = c.parentid
+        where a.id='1'
+    </select>
+
+</mapper>
